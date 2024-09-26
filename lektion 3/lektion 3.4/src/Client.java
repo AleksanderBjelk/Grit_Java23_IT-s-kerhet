@@ -6,8 +6,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Client {
+    private static final int NUMBER_OF_THREADS = 1000;
+
+
     public static void main(String[] args) {
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
+        ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
         for (int i = 0; i < 10; i++) {
             executorService.submit(()-> attackServer());
@@ -21,11 +24,13 @@ public class Client {
     private static void attackServer() {
         HttpClient httpClient = HttpClient.newHttpClient();
             for (int i = 0; i < NUMBER_REQUEST; i++) {
+
+
                 try {
                     HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create(URL)).GET().build();
                     HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-                    System.out.println("Response: " + httpResponse.statusCode() + httpResponse.body() + " " + i);
+                    System.out.println("Response: " + httpResponse.statusCode() + " " + httpResponse.body() + " " + i);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
